@@ -58,7 +58,7 @@ defmodule EctoJob.Mixfile do
 
   defp deps do
     [
-      {:ecto, ">= 2.2"},
+      {:ecto, "~> 3.0.3"},
       {:postgrex, "~> 0.13"},
       {:poison, "~> 3.1"},
       {:gen_stage, "~> 0.13"},
