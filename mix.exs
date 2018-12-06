@@ -59,7 +59,9 @@ defmodule EctoJob.Mixfile do
   defp deps do
     [
       {:ecto, "~> 3.0.3"},
+      {:ecto_sql, "~> 3.0"},
       {:postgrex, "~> 0.13"},
+      {:jason, "~> 1.1"},
       {:poison, "~> 3.1"},
       {:gen_stage, "~> 0.13"},
       {:credo, "~> 0.8", only: :dev, runtime: false},

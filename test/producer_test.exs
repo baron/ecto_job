@@ -35,7 +35,7 @@ defmodule EctoJob.ProducerTest do
     end
 
     test "When scheduled jobs can be activated", %{state: state} do
-      at = DateTime.from_naive!(~N[2017-08-17T12:23:34.0Z], "Etc/UTC")
+      at = DateTime.from_naive!(~N[2017-08-17T12:23:34.868569Z], "Etc/UTC")
       Repo.insert!(JobQueue.new(%{}, schedule: at))
 
       assert {:noreply, [%JobQueue{}], %{demand: 9}} =

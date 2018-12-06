@@ -10,7 +10,7 @@ defmodule EctoJob.Worker do
   @doc """
   Equivalent to `start_link(config, job, DateTime.utc_now())`
   """
-  @spec start_link(Config.t, EctoJob.JobQueue.job()) :: {:ok, pid}
+  @spec start_link(Config.t(), EctoJob.JobQueue.job()) :: {:ok, pid}
   def start_link(config, job), do: start_link(config, job, DateTime.utc_now())
 
   @doc """
@@ -18,7 +18,7 @@ defmodule EctoJob.Worker do
   This may fail if the job reservation has expired, in which case the job will be
   reactivated by the producer.
   """
-  @spec start_link(Config.t, EctoJob.JobQueue.job(), DateTime.t()) :: {:ok, pid}
+  @spec start_link(Config.t(), EctoJob.JobQueue.job(), DateTime.t()) :: {:ok, pid}
   def start_link(config = %Config{repo: repo, execution_timeout: timeout}, job = %queue{}, now) do
     Task.start_link(fn ->
       with {:ok, job} <- JobQueue.update_job_in_progress(repo, job, now, timeout) do
@@ -29,11 +29,16 @@ defmodule EctoJob.Worker do
     end)
   end
 
-  @spec log_duration(Config.t, EctoJob.JobQueue.job(), DateTime.t()) :: :ok
-  defp log_duration(%Config{log: true, log_level: log_level}, _job = %queue{id: id}, start = %DateTime{}) do
+  @spec log_duration(Config.t(), EctoJob.JobQueue.job(), DateTime.t()) :: :ok
+  defp log_duration(
+         %Config{log: true, log_level: log_level},
+         _job = %queue{id: id},
+         start = %DateTime{}
+       ) do
     duration = DateTime.diff(DateTime.utc_now(), start, :microseconds)
     Logger.log(log_level, fn -> "#{queue}[#{id}] done: #{duration} µs" end)
   end
+
   defp log_duration(_config, _job, _start), do: :ok
 
   @spec notify_completed(repo, EctoJob.JobQueue.job()) :: :ok

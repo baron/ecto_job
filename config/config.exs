@@ -5,18 +5,26 @@
 # is restricted to this project.
 use Mix.Config
 
-if Mix.env() == :test do
-  config :ecto_job, EctoJob.Test.Repo,
-    adapter: Ecto.Adapters.Postgres,
-    username: "postgres",
-    password: "password",
-    database: "ecto_job_test",
-    hostname: "localhost",
-    pool: Ecto.Adapters.SQL.Sandbox,
-    priv: "test/support/"
+# config :ecto_job, EctoJob.Test.Repo,
+#   database: "ecto_job_test",
+#   username: "postgres",
+#   password: "postgres",
+#   hostname: "localhost"
 
-  config :ecto_job, ecto_repos: [EctoJob.Test.Repo]
+# if Mix.env() == :test do
+config :ecto_job, EctoJob.Test.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  username: "postgres",
+  password: "postgres",
+  database: "ecto_job_test",
+  hostname: "localhost",
+  migration_timestamps: [type: :naive_datetime_usec],
+  pool: Ecto.Adapters.SQL.Sandbox,
+  priv: "test/support/"
 
-  config :logger, level: :warn
+config :ecto_job, ecto_repos: [EctoJob.Test.Repo]
 
-end
+config :logger, level: :warn
+# end
+
+config :ecto_job, ecto_repos: [EctoJob.Test.Repo]
